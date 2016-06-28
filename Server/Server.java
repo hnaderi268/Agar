@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import Common.Data;
 import Common.*;
@@ -15,18 +16,31 @@ import Common.*;
 /**
  * Created by Majid Vaghari on 6/26/2016.
  */
-public class Server {
+public class Server extends Thread {
 
-	public static ArrayList<PlayerSocket> players = new ArrayList();
+	
 	public static Window window = new Window();
+	private App app;
+	private int port;
 
-	public static void main(String[] args) throws IOException {
+	public Server(App app, int port) {
+		this.app = app;
+		this.port = port;
+	}
+
+	public void run() {
 
 		window.write("initializing server...");
-		window.write("server created");
 		int connections = 1;
-		ServerSocket serverSocket=new ServerSocket(3379);
-		
+		ServerSocket serverSocket = null;
+		try {
+			serverSocket = new ServerSocket(port);
+			window.write("server created. Port:" + port);
+			window.write("");
+		} catch (IOException e1) {
+			window.write("There are problems with creating server.");
+			window.write("");
+		}
 		while (true) {
 			try {
 				window.write("waiting for player " + connections++);
@@ -34,23 +48,21 @@ public class Server {
 				window.write("connection established.");
 				window.write("remote address: " + socket.getRemoteSocketAddress());
 				createUser(socket);
-				
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 	}
 
-	private static void createUser(Socket socket) {
+	private void createUser(Socket socket) {
 		try {
 			ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
 			Object o = input.readObject();
 			UserInfo o2 = (UserInfo) o;
-			PlayerSocket p = new PlayerSocket(socket, o2.name);
-			players.add(p);
-			window.write("Player " + o2.name + " created & joined the game.");
+			Player ps = new Player(socket, o2.name, app.controller);
+			ps.start();
+			window.write("Player " + o2.name + " joined the game.");
 			window.write("");
-			p.start();
 		} catch (IOException | ClassNotFoundException e) {
 
 		}
