@@ -31,7 +31,7 @@ public class Window /* extends JFrame */ {
 		frame.add(label);
 		label.setEditable(false);
 		frame.pack();
-		frame.setSize(200, 900);
+		frame.setSize(220, 900);
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		GraphicsDevice defaultScreen = ge.getDefaultScreenDevice();
 		Rectangle rect = defaultScreen.getDefaultConfiguration().getBounds();

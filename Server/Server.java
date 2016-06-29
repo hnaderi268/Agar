@@ -17,14 +17,13 @@ import Common.*;
  */
 public class Server extends Thread {
 
-	public Window window ;
+	public Window window;
 	private App app;
 	private int port;
 
-
 	public Server(App app, Window window, int port) {
 		this.app = app;
-		this.window=window;
+		this.window = window;
 		this.port = port;
 	}
 
@@ -36,35 +35,47 @@ public class Server extends Thread {
 		try {
 			serverSocket = new ServerSocket(port);
 			window.write("server created. Port:" + port);
-			window.write("");
+			window.write(serverSocket.getInetAddress().toString());
 		} catch (IOException e1) {
 			window.write("There are problems with creating server.");
 			window.write("");
 		}
 		while (true) {
 			try {
-				window.write("waiting for player " + connections++);
+				window.write("");
+				window.write("waiting for request :" + connections++);
 				Socket socket = serverSocket.accept();
+				ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
+				output.writeObject("Agar");
+
+				ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
+				Object o = input.readObject();
+				String s = (String) o;
+
 				window.write("connection established.");
 				window.write("remote address: " + socket.getRemoteSocketAddress());
-				createUser(socket);
-			} catch (IOException e) {
+
+				if (s.equals("yes"))
+					createUser(socket, output, input);
+
+			} catch (IOException | ClassNotFoundException e) {
 				e.printStackTrace();
 			}
 		}
 	}
 
-	private void createUser(Socket socket) {
+	private void createUser(Socket socket, ObjectOutputStream output, ObjectInputStream input) {
 		try {
-			ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
-			ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
+			// ObjectInputStream input = new
+			// ObjectInputStream(socket.getInputStream());
+			// ObjectOutputStream output = new
+			// ObjectOutputStream(socket.getOutputStream());
 			Object o = input.readObject();
 			UserInfo o2 = (UserInfo) o;
-			Player ps = new Player(socket,input,output, o2.name, app.controller);
+			Player ps = new Player(socket, input, output, o2.name, app.controller);
 			ps.send.start();
 			ps.read.start();
 			window.write("Player " + o2.name + " joined the game.");
-			window.write("");
 		} catch (IOException | ClassNotFoundException e) {
 
 		}

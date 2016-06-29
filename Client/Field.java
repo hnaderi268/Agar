@@ -19,6 +19,7 @@ public class Field extends JPanel {
 	public ArrayList<UserInfo> usersInfo = new ArrayList();
 	public MouseMotionListener mouse_move;
 	public int mouseX,mouseY;
+	public int playerX,playerY;
 
 	public Field(App app) {
 		this.app = app;
@@ -51,6 +52,6 @@ public class Field extends JPanel {
 
 		if (balls != null)
 			for (Ball ball : balls)
-				ball.draw(g2);
+					ball.draw(g2, playerX, playerY);
 	}
 }

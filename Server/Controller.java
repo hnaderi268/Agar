@@ -19,6 +19,7 @@ public class Controller extends Thread {
 	public int scoreBallsCount = (mapWidth * mapHeight) / 40000;
 	public App app;
 	public Timer dance;
+	public int speed=50;
 
 	public Controller(App app) {
 		this.app = app;

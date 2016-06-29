@@ -13,6 +13,7 @@ public class App {
 		app = new App();
 		controller = new Controller(app);
 		app.window = new Window();
+		
 		server = new Server(app, app.window, 1469);
 		server.start();
 	}

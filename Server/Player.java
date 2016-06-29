@@ -62,9 +62,30 @@ public class Player {
 		move = new Timer(10, new ActionListener() {
 			public synchronized void actionPerformed(ActionEvent e) {
 				for (Ball ball : balls) {
-					ball.setX(mouseX);
-					ball.setY(mouseY);
+					double difx = x;
+					x += (getSpeed() / getSurface()) * (mouseX - 1440 / 2) / (Math.sqrt(
+							(mouseX - 1440 / 2) * (mouseX - 1440 / 2) + (mouseY - 1440 / 2) * (mouseY - 1440 / 2)));
+					difx = x - difx;
+					double dify = y;
+					y += (getSpeed() / getSurface()) * (mouseY - 410)
+							/ (Math.sqrt((mouseX - 410) * (mouseX - 410) + (mouseY - 410) * (mouseY - 410)));
+					dify = y - dify;
+
+					System.out.println(ball.getX() + difx);
+					ball.setX(ball.getX() + difx);
+					ball.setY(ball.getY() + dify);
 				}
+			}
+
+			private double getSurface() {
+				double sum = 0;
+				for (Ball ball : balls)
+					sum += ball.getRadius();
+				return sum;
+			}
+
+			private int getSpeed() {
+				return controller.speed;
 			}
 		});
 		move.start();
@@ -78,17 +99,19 @@ public class Player {
 					int cnt = 1;
 
 					output.reset();
+					output.writeObject(new Point((int)x,(int) y));
 					output.writeObject(controller.getAllBalls());
 					output.writeObject(playersList());
 
-//					PrintWriter writer;
-//					try {
-//						writer = new PrintWriter("serversend.txt", "UTF-8");
-//						writer.println(cnt++);
-//						writer.close();
-//					} catch (FileNotFoundException | UnsupportedEncodingException e1) {
-//						e1.printStackTrace();
-//					}
+					// PrintWriter writer;
+					// try {
+					// writer = new PrintWriter("serversend.txt", "UTF-8");
+					// writer.println(cnt++);
+					// writer.close();
+					// } catch (FileNotFoundException |
+					// UnsupportedEncodingException e1) {
+					// e1.printStackTrace();
+					// }
 
 				} catch (Exception e1) {
 
@@ -109,16 +132,16 @@ public class Player {
 					Point pointer = (Point) point;
 					mouseX = pointer.x;
 					mouseY = pointer.y;
-					System.out.println(pointer.x+" "+pointer.y);
 
-//					PrintWriter writer;
-//					try {
-//						writer = new PrintWriter("serverread.txt", "UTF-8");
-//						writer.println(cnt++);
-//						writer.close();
-//					} catch (FileNotFoundException | UnsupportedEncodingException e1) {
-//						e1.printStackTrace();
-//					}
+					// PrintWriter writer;
+					// try {
+					// writer = new PrintWriter("serverread.txt", "UTF-8");
+					// writer.println(cnt++);
+					// writer.close();
+					// } catch (FileNotFoundException |
+					// UnsupportedEncodingException e1) {
+					// e1.printStackTrace();
+					// }
 
 				} catch (Exception e1) {
 
@@ -144,4 +167,5 @@ public class Player {
 			score += ball.getRadius();
 		return score;
 	}
+
 }

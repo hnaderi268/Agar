@@ -13,7 +13,10 @@ public class App {
 		// int port=Integer.parseInt(JOptionPane.showInputDialog("Hi.Welcome to
 		// the world's best game ever\n" +
 		// "First of all,write server's Port:"));
-		String state = client.connectToServer(1469);
+		
+		JOptionPane.showMessageDialog(null, "Available servers are:\n"+client.availableServers(1469));
+		
+		String state = client.connectToServer(JOptionPane.showInputDialog("Type IP of the server you want to join: "),1469);
 		System.out.println(state);
 		if (!state.equals("Can not find the Server")) {
 			client.sendUserInfo(JOptionPane.showInputDialog(
