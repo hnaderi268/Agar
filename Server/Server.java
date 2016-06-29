@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import Common.Data;
 import Common.*;
 
 /**
@@ -18,13 +17,14 @@ import Common.*;
  */
 public class Server extends Thread {
 
-	
-	public static Window window = new Window();
+	public Window window ;
 	private App app;
 	private int port;
 
-	public Server(App app, int port) {
+
+	public Server(App app, Window window, int port) {
 		this.app = app;
+		this.window=window;
 		this.port = port;
 	}
 
@@ -57,10 +57,12 @@ public class Server extends Thread {
 	private void createUser(Socket socket) {
 		try {
 			ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
+			ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
 			Object o = input.readObject();
 			UserInfo o2 = (UserInfo) o;
-			Player ps = new Player(socket, o2.name, app.controller);
-			ps.start();
+			Player ps = new Player(socket,input,output, o2.name, app.controller);
+			ps.send.start();
+			ps.read.start();
 			window.write("Player " + o2.name + " joined the game.");
 			window.write("");
 		} catch (IOException | ClassNotFoundException e) {

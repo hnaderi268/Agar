@@ -104,7 +104,8 @@ public class Ball implements Serializable {
 		g.setColor(color);
 		g.fillOval((int) x - (int) (radius / 2), (int) y - (int) (radius / 2), (int) radius, (int) radius);
 		g.setColor(color.darker().darker());
-		g.drawString(name, (int) x - 5, (int) y + 5);
+		if(name!=null)
+			g.drawString(name, (int) x - 5, (int) y + 5);
 	}
 
 	public void draw(Graphics2D g, double x2, double y2) {
