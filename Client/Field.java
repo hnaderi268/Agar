@@ -18,16 +18,16 @@ public class Field extends JPanel {
 	ArrayList<Ball> balls;
 	public ArrayList<UserInfo> usersInfo = new ArrayList();
 	public MouseMotionListener mouse_move;
-	public int mouseX,mouseY;
-	public int playerX,playerY;
+	public int mouseX, mouseY;
+	public int playerX, playerY;
 
 	public Field(App app) {
 		this.app = app;
 
 		MouseMotionListener mouse_move = new MouseMotionListener() {
 			public void mouseMoved(MouseEvent e) {
-				mouseX=e.getX();
-				mouseY=e.getY();
+				mouseX = e.getX();
+				mouseY = e.getY();
 			}
 
 			public void mouseDragged(MouseEvent e) {
@@ -42,7 +42,12 @@ public class Field extends JPanel {
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g2.setColor(Color.WHITE);
-		g2.fillRect(0, 0, 1400, 900);
+		g2.fillRect(0, 0, 2000, 1000);
+//		g2.setColor(Color.BLACK);
+//		g2.fillRect((int) -playerX + 2000 / 4, (int) -playerY + 1000 / 2, 2000,
+//				1000);
+//		g2.setColor(Color.WHITE);
+//		g2.fillRect((int) -playerX + 2000 / 4 + 10, (int) -playerY + 1000 / 2 + 10, 2000 - 20, 1000 - 20);
 
 		g2.setColor(Color.black);
 		int spaceH = 0;
@@ -52,6 +57,6 @@ public class Field extends JPanel {
 
 		if (balls != null)
 			for (Ball ball : balls)
-					ball.draw(g2, playerX, playerY);
+				ball.draw(g2, playerX, playerY);
 	}
 }

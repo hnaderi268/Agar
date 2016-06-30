@@ -1,5 +1,7 @@
 package Server;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -9,6 +11,7 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.Timer;
 
 import Common.*;
 
@@ -20,11 +23,29 @@ public class Server extends Thread {
 	public Window window;
 	private App app;
 	private int port;
-
+	Timer checkConnections;
+	
 	public Server(App app, Window window, int port) {
 		this.app = app;
 		this.window = window;
 		this.port = port;
+		checkConnections();
+	}
+
+	private void checkConnections() {
+		checkConnections=new Timer(100, new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ArrayList<Player> playertemp = (ArrayList<Player>) app.controller.players.clone();
+				for(Player player:playertemp){
+					if(System.currentTimeMillis()-player.lastRead>6000 && player.lastRead!=0){
+						window.write("PLayer "+player.name+"has left the game.");
+						app.controller.players.remove(player);
+					}	
+//					System.out.println("PLayer "+player.name+" current:"+System.currentTimeMillis()+" last:"+player.lastRead);
+				}
+			}
+		});
+		checkConnections.start();
 	}
 
 	public void run() {

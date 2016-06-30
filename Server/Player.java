@@ -22,7 +22,7 @@ public class Player {
 
 	private ObjectInputStream input;
 	private ObjectOutputStream output;
-	private String name;
+	public String name;
 	private Socket socket;
 
 	Controller controller;
@@ -32,6 +32,8 @@ public class Player {
 	ArrayList<Ball> balls = new ArrayList();
 	private UserInfo userInfo;
 
+	long lastRead;
+	
 	Timer move;
 	Timer send;
 	Timer read;
@@ -71,7 +73,7 @@ public class Player {
 							/ (Math.sqrt((mouseX - 410) * (mouseX - 410) + (mouseY - 410) * (mouseY - 410)));
 					dify = y - dify;
 
-					System.out.println(ball.getX() + difx);
+//					System.out.println(ball.getX() + difx);
 					ball.setX(ball.getX() + difx);
 					ball.setY(ball.getY() + dify);
 				}
@@ -103,16 +105,6 @@ public class Player {
 					output.writeObject(controller.getAllBalls());
 					output.writeObject(playersList());
 
-					// PrintWriter writer;
-					// try {
-					// writer = new PrintWriter("serversend.txt", "UTF-8");
-					// writer.println(cnt++);
-					// writer.close();
-					// } catch (FileNotFoundException |
-					// UnsupportedEncodingException e1) {
-					// e1.printStackTrace();
-					// }
-
 				} catch (Exception e1) {
 
 				}
@@ -128,21 +120,12 @@ public class Player {
 					int cnt = 1;
 
 					Object point = input.readObject();
-					System.out.println(point);
 					Point pointer = (Point) point;
 					mouseX = pointer.x;
 					mouseY = pointer.y;
 
-					// PrintWriter writer;
-					// try {
-					// writer = new PrintWriter("serverread.txt", "UTF-8");
-					// writer.println(cnt++);
-					// writer.close();
-					// } catch (FileNotFoundException |
-					// UnsupportedEncodingException e1) {
-					// e1.printStackTrace();
-					// }
-
+					lastRead = System.currentTimeMillis();
+					System.out.println(lastRead);
 				} catch (Exception e1) {
 
 				}
