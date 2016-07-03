@@ -21,7 +21,7 @@ import Common.UserInfo;
 
 public class RegisterPanel extends JFrame {
 
-	private JLabel labelName = new JLabel("Enter your name: ");
+	private JLabel labelName = new JLabel("Enter your name(ID): ");
 	private JLabel labelPass = new JLabel("Enter your password: ");
 	private JLabel labelPic = new JLabel("Please select your costum picture: ");
 	private JLabel labelColor = new JLabel("Please enter your costum color(in Hex): ");
