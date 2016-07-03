@@ -15,16 +15,14 @@ import javax.swing.Timer;
 
 import Common.*;
 
-/**
- * Created by Majid Vaghari on 6/26/2016.
- */
 public class Server extends Thread {
 
 	public Window window;
 	private App app;
 	private int port;
 	Timer checkConnections;
-	
+	public static ArrayList<UserInfo> users = new ArrayList();
+
 	public Server(App app, Window window, int port) {
 		this.app = app;
 		this.window = window;
@@ -33,15 +31,14 @@ public class Server extends Thread {
 	}
 
 	private void checkConnections() {
-		checkConnections=new Timer(100, new ActionListener() {
+		checkConnections = new Timer(100, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ArrayList<Player> playertemp = (ArrayList<Player>) app.controller.players.clone();
-				for(Player player:playertemp){
-					if(System.currentTimeMillis()-player.lastRead>6000 && player.lastRead!=0){
-						window.write("PLayer "+player.name+"has left the game.");
+				for (Player player : playertemp) {
+					if (System.currentTimeMillis() - player.lastRead > 2000 && player.lastRead != 0) {
+						window.write(player.userInfo.name + " has left the game.");
 						app.controller.players.remove(player);
-					}	
-//					System.out.println("PLayer "+player.name+" current:"+System.currentTimeMillis()+" last:"+player.lastRead);
+					}
 				}
 			}
 		});
@@ -75,9 +72,15 @@ public class Server extends Thread {
 
 				window.write("connection established.");
 				window.write("remote address: " + socket.getRemoteSocketAddress());
+				window.write(s + " request");
 
-				if (s.equals("yes"))
+				if (s.equals("register")) {
 					createUser(socket, output, input);
+
+				}
+
+				if (s.equals("login"))
+					loginUser(socket, output, input);
 
 			} catch (IOException | ClassNotFoundException e) {
 				e.printStackTrace();
@@ -87,18 +90,49 @@ public class Server extends Thread {
 
 	private void createUser(Socket socket, ObjectOutputStream output, ObjectInputStream input) {
 		try {
-			// ObjectInputStream input = new
-			// ObjectInputStream(socket.getInputStream());
-			// ObjectOutputStream output = new
-			// ObjectOutputStream(socket.getOutputStream());
+
 			Object o = input.readObject();
 			UserInfo o2 = (UserInfo) o;
-			Player ps = new Player(socket, input, output, o2.name, app.controller);
+			users.add(o2);
+
+			Player ps = new Player(socket, input, output, o2, app.controller);
 			ps.send.start();
 			ps.read.start();
-			window.write("Player " + o2.name + " joined the game.");
+			window.write(o2.name + " joined the game.");
 		} catch (IOException | ClassNotFoundException e) {
+			System.out.println(" " + e.getMessage());
+		}
+	}
 
+	private void loginUser(Socket socket, ObjectOutputStream output, ObjectInputStream input) {
+		try {
+			Object o = input.readObject();
+			String id = (String) o;
+
+			o = input.readObject();
+			String passCode = (String) o;
+
+			boolean state = false;
+			for (UserInfo user : users) {
+				if (user.name.equals(id)) {
+					if (user.passCode.equals(passCode)) {
+						Player ps = new Player(socket, input, output, user, app.controller);
+						ps.send.start();
+						ps.read.start();
+						window.write(id + " joined the game.");
+						state = true;
+						break;
+					}
+				}
+				window.write(user.name + " " + id + "     " + user.passCode + " " + passCode);
+			}
+			if (state)
+				output.writeObject("Welcome back!");
+			if (!state)
+				output.writeObject("ID or Pass Code is wrong!");
+
+		} catch (Exception e) {
+			System.out.println(" " + e.getMessage());
 		}
 	}
 }

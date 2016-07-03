@@ -2,33 +2,41 @@ package Client;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class registerPanel extends JFrame {
+import Common.UserInfo;
+
+public class RegisterPanel extends JFrame {
 
 	private JLabel labelName = new JLabel("Enter your name: ");
 	private JLabel labelPass = new JLabel("Enter your password: ");
-	private JLabel labelPic = new JLabel("Please enter your costum picture: ");
+	private JLabel labelPic = new JLabel("Please select your costum picture: ");
 	private JLabel labelColor = new JLabel("Please enter your costum color(in Hex): ");
 	private JTextField textName = new JTextField(20);
 	private JTextField textPass = new JTextField(20);
-	private JTextField textPic = new JTextField(20);
+	private JButton btnPic = new JButton("Browse");
 	private JTextField textColor = new JTextField(20);
 	private JButton playButton = new JButton("Play!");
-	private App app;
+	private Client client;
+	private String address;
 
-	public registerPanel(App app) {
+	public RegisterPanel(Client client) {
 
-		this.app = app;
+		this.client = client;
+		client.app.startPan.setVisible(false);
 
 		this.setTitle("Register Panel");
 		this.setSize(400, 300);
@@ -61,7 +69,7 @@ public class registerPanel extends JFrame {
 		newPanel.add(labelPic, constraints);
 
 		constraints.gridx = 1;
-		newPanel.add(textPic, constraints);
+		newPanel.add(btnPic, constraints);
 
 		constraints.gridx = 0;
 		constraints.gridy = 3;
@@ -76,35 +84,35 @@ public class registerPanel extends JFrame {
 		constraints.anchor = GridBagConstraints.CENTER;
 		newPanel.add(playButton, constraints);
 
+		btnPic.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setCurrentDirectory(new File("/Users/ho3in/Desktop/Avatar"));
+				int returnValue = fileChooser.showOpenDialog(null);
+				if (returnValue == JFileChooser.APPROVE_OPTION) {
+					File selectedFile = fileChooser.getSelectedFile();
+					address=selectedFile.getAbsolutePath();
+				}
+			}
+		});
+		
 		playButton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-//				if (textMapW.getText().equals(""))
-//					textMapW.setText("1000");
-//				if (textMapH.getText().equals(""))
-//					textMapH.setText("500");
-//				if (textScoreballs.getText().equals(""))
-//					textScoreballs.setText("0");
-//				if (textSpeed.getText().equals(""))
-//					textSpeed.setText("400");
-//				int scoreballs = Integer.parseInt(textScoreballs.getText());
-//				int mapw = Integer.parseInt(textMapW.getText());
-//				int maph = Integer.parseInt(textMapH.getText());
-//				int speed = Integer.parseInt(textSpeed.getText());
-//				if (mapw < 1000 || mapw > 4000)
-//					mapw = 2000;
-//				if (maph < 500 || maph > 2000)
-//					maph = 1000;
-//				if (scoreballs == 0)
-//					scoreballs = (int) ((maph * mapw) / 40000);
-//
-//				app.controller = new Controller(app, mapw, maph, speed, scoreballs);
+				String name=textName.getText();
+				String passCode=textPass.getText();
+//				String name=textName.getText();
+				client.sendUserInfo(new UserInfo(name,address,passCode));
+				client.app.window = new Window(client.app);
+				client.read();
+				client.send();
 			}
 		});
 
 		// set border for the panel
-		newPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Game Config"));
+		newPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Register"));
 
 		// add the panel to this frame
 		add(newPanel);

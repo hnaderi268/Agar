@@ -41,13 +41,11 @@ public class Window /* extends JFrame */ {
 		frame.setAlwaysOnTop(true);
 		frame.setVisible(true);
 
-		new Timer(1000, (e) -> label.setText(l.toString())).start();
+		new Timer(100, (e) -> label.setText(l.toString())).start();
 
 	}
 
 	public void write(String text) {
 		l.append(text + "\n");
-		// frame.add(label);
-		// frame.setVisible(true);
 	}
 }

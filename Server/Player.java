@@ -22,7 +22,6 @@ public class Player {
 
 	private ObjectInputStream input;
 	private ObjectOutputStream output;
-	public String name;
 	private Socket socket;
 
 	Controller controller;
@@ -30,34 +29,32 @@ public class Player {
 	double x, y;
 	int mouseX, mouseY;
 	ArrayList<Ball> balls = new ArrayList();
-	private UserInfo userInfo;
+	public UserInfo userInfo;
 
 	long lastRead;
 	
-	Timer move;
-	Timer send;
-	Timer read;
+	Timer move,send,read,scoreUpdater;
 
-	public Player(Socket socket, ObjectInputStream input, ObjectOutputStream output, String name,
+	public Player(Socket socket, ObjectInputStream input, ObjectOutputStream output, UserInfo userInfo,
 			Controller controller) {
 		this.socket = socket;
 		this.input = input;
 		this.output = output;
-		this.name = name;
 		this.controller = controller;
 		controller.players.add(this);
-
-		userInfo = new UserInfo(name);
 
 		this.x = Math.random() * controller.getMapWidth();
 		this.y = Math.random() * controller.getMapHeight();
 
-		Ball b = new Ball(x, y, 50, name);
+		this.userInfo = userInfo;
+		
+		Ball b = new Ball(x, y, 50, userInfo.name);
 		balls.add(b);
 
 		read();
 		send();
 		move();
+		scoreUpdate();
 	}
 
 	public void move() {
@@ -125,7 +122,6 @@ public class Player {
 					mouseY = pointer.y;
 
 					lastRead = System.currentTimeMillis();
-					System.out.println(lastRead);
 				} catch (Exception e1) {
 
 				}
@@ -133,6 +129,16 @@ public class Player {
 		});
 	}
 
+	private void scoreUpdate() {
+		scoreUpdater = new Timer(10, new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				userInfo.score=getScore();
+			}
+		});
+		scoreUpdater.start();
+	}
+	
 	private ArrayList<UserInfo> playersList() {
 		ArrayList usersInfo = new ArrayList();
 		for (Player player : controller.players)
@@ -148,7 +154,7 @@ public class Player {
 		int score = 0;
 		for (Ball ball : balls)
 			score += ball.getRadius();
-		return score;
+		return (int)Math.PI*score;
 	}
 
 }

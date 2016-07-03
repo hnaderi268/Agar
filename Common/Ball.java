@@ -29,17 +29,6 @@ public class Ball implements Serializable {
 		color = giveColor();
 	}
 
-	// public Ball(double x, double y, double r, double difx, double difr,
-	// String name) {
-	// this.x = x;
-	// this.y = y;
-	// radius = r;
-	// this.difx = difx;
-	// this.dify = dify;
-	// this.name = name;
-	// color = giveColor();
-	// }
-
 	public double getRadius() {
 		return radius;
 	}

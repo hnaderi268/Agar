@@ -18,9 +18,8 @@ public class Controller extends Thread {
 	public int mapWidth = 2000, mapHeight = 1000;
 	public int scoreBallsCount = (mapWidth * mapHeight) / 40000;
 	public App app;
-	public Timer dance;
 	public int speed = 100;
-	public Timer hitTest, checkLose;
+	public Timer dance,hitTest, checkLose;
 
 	public Controller(App app) {
 		this.app = app;
@@ -50,7 +49,7 @@ public class Controller extends Thread {
 			public void actionPerformed(ActionEvent e) {
 				for (Player player : players)
 					if (player.balls.size() == 0) {
-						app.server.window.write(player.name + " lost.");
+						app.server.window.write(player.userInfo.name + " lost.");
 						players.remove(player);
 					}
 			}
@@ -116,6 +115,8 @@ public class Controller extends Thread {
 	public double getMapHeight() {
 		return mapHeight;
 	}
+	
+
 
 	public ArrayList<Ball> getAllBalls() {
 		ArrayList<Ball> allBalls = new ArrayList();

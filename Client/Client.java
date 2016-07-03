@@ -1,5 +1,7 @@
 package Client;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -13,14 +15,13 @@ import java.net.SocketException;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
+import javax.swing.Timer;
 
 import Common.Ball;
 import Common.Point;
 import Common.UserInfo;
+import Server.Player;
 
-/**
- * Created by Majid Vaghari on 6/26/2016.
- */
 public class Client {
 
 	Socket socket;
@@ -34,6 +35,9 @@ public class Client {
 	Thread send;
 	Thread read;
 
+	long lastRead;
+	Timer checkConnections;
+
 	public Client(App app) {
 		this.app = app;
 	}
@@ -42,11 +46,7 @@ public class Client {
 		String availableServers = "";
 		System.out.println("finding servers...");
 		socket = new Socket();
-		// try {
-		// socket.setSoTimeout(1000);
-		// } catch (SocketException e1) {
-		// e1.printStackTrace();
-		// }
+
 		for (int i = ip_interval_st; i <= ip_interval_en; i++) {
 			try {
 				System.out.println("checking: " + "127.0.0." + i);
@@ -69,9 +69,9 @@ public class Client {
 			input = new ObjectInputStream(socket2.getInputStream());
 			Object o = input.readObject();
 			String s = (String) o;
-			if (s.equals("Agar")){
+			if (s.equals("Agar")) {
 				output = new ObjectOutputStream(socket.getOutputStream());
-				output.writeObject("no");
+				output.writeObject("info");
 				return true;
 			}
 		} catch (IOException | ClassNotFoundException e) {
@@ -84,24 +84,51 @@ public class Client {
 		try {
 			System.out.println("trying to connect...");
 			socket = new Socket(ip, port);
-			System.out.println("connection established.");
+			input = new ObjectInputStream(socket.getInputStream());
+			output = new ObjectOutputStream(socket.getOutputStream());
+			Object o = input.readObject();
 			return ("connection established.");
-		} catch (IOException e) {
+		} catch (IOException | ClassNotFoundException e) {
 			return ("Can not find the Server");
 		}
 	}
 
-	public void sendUserInfo(String name) {
+	public void sendUserInfo(UserInfo userInfo) {
 		try {
-			input = new ObjectInputStream(socket.getInputStream());
-			Object o = input.readObject();
-			output = new ObjectOutputStream(socket.getOutputStream());
-			output.writeObject("yes");
-			UserInfo info = new UserInfo(name);
-			output.writeObject(info);
-		} catch (IOException | ClassNotFoundException e) {
+			output.writeObject("register");
+			output.writeObject(userInfo);
+			checkConnections();
+
+		} catch (IOException e) {
 
 		}
+	}
+
+	public void loginUser(String name,String passCode) {
+		try {
+
+			 output.writeObject("login");
+			 output.writeObject(name);
+			 output.writeObject(passCode);
+			 Object o=input.readObject();
+			 String msg=(String)o;
+			 JOptionPane.showMessageDialog(null, msg);
+			 checkConnections();
+
+		} catch (Exception e) {
+
+		}
+	}
+
+	private void checkConnections() {
+		checkConnections = new Timer(100, new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (System.currentTimeMillis() - lastRead > 2000 && lastRead != 0 && System.currentTimeMillis() - lastRead < 2099 ) {
+					System.out.println("Your connection has lost. You're now disconnected from server.");
+				}
+			}
+		});
+		checkConnections.start();
 	}
 
 	public void send() {
@@ -115,15 +142,6 @@ public class Client {
 						Point pt = new Point(app.window.field.mouseX, app.window.field.mouseY);
 						output.writeObject(pt);
 
-						// PrintWriter writer;
-						// try {
-						// writer = new PrintWriter("clientsend.txt", "UTF-8");
-						// writer.println(cnt);
-						// writer.close();
-						// } catch (FileNotFoundException |
-						// UnsupportedEncodingException e1) {
-						// e1.printStackTrace();
-						// }
 						Thread.currentThread().sleep(70);
 					}
 				} catch (Exception e) {
@@ -156,16 +174,7 @@ public class Client {
 						ArrayList<UserInfo> usersInfo = (ArrayList<UserInfo>) users;
 						app.window.field.usersInfo = usersInfo;
 
-						// PrintWriter writer;
-						// try {
-						// writer = new PrintWriter("clientread.txt", "UTF-8");
-						// writer.println(cnt++);
-						// writer.close();
-						// } catch (FileNotFoundException |
-						// UnsupportedEncodingException e1) {
-						// e1.printStackTrace();
-						// }
-
+						lastRead = System.currentTimeMillis();
 						Thread.currentThread().sleep(70);
 					}
 				} catch (Exception e) {

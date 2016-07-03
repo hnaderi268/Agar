@@ -12,8 +12,7 @@ public class App {
 	public static void main(String[] args) {
 		app = new App();
 		controller = new Controller(app);
-		app.window = new Window();
-		
+		app.window = new Window();		
 		server = new Server(app, app.window, 1469);
 		server.start();
 	}
