@@ -66,6 +66,7 @@ public class LoginPanel extends JFrame {
 					client.app.window = new Window(client.app);
 					client.read();
 					client.send();
+					setVisible(false);
 				}
 			});
 

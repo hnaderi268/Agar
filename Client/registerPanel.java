@@ -8,6 +8,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -33,7 +34,7 @@ public class RegisterPanel extends JFrame {
 	private JTextField textColor = new JTextField(20);
 	private JButton playButton = new JButton("Play!");
 	private Client client;
-	private String address="Avatar/1.jpg";
+	private String address = "Avatar/1.jpg";
 	private Color color = giveColor();
 
 	public RegisterPanel(Client client) {
@@ -101,7 +102,7 @@ public class RegisterPanel extends JFrame {
 				int returnValue = fileChooser.showOpenDialog(null);
 				if (returnValue == JFileChooser.APPROVE_OPTION) {
 					File selectedFile = fileChooser.getSelectedFile();
-					address = selectedFile.getAbsolutePath();
+					address = "Avatar/"+selectedFile.getName();
 				}
 			}
 		});
@@ -120,6 +121,7 @@ public class RegisterPanel extends JFrame {
 				client.app.window = new Window(client.app);
 				client.read();
 				client.send();
+				setVisible(false);
 			}
 		});
 

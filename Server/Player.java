@@ -59,6 +59,7 @@ public class Player {
 	}
 
 	public void move() {
+		//10
 		move = new Timer(10, new ActionListener() {
 			public synchronized void actionPerformed(ActionEvent e) {
 				for (Ball ball : balls) {

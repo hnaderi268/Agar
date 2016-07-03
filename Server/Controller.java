@@ -11,7 +11,7 @@ import javax.swing.Timer;
 
 import Common.Ball;
 
-public class Controller extends Thread {
+public class Controller{
 
 	public static ArrayList<Player> players = new ArrayList();
 	public static ArrayList<Ball> scoreBalls = new ArrayList();
@@ -30,7 +30,7 @@ public class Controller extends Thread {
 	}
 
 	private void dance() {
-		dance = new Timer(70, new ActionListener() {
+		dance = new Timer(100, new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
 				for (Player player : players)
@@ -104,10 +104,6 @@ public class Controller extends Thread {
 		}
 	}
 
-	public void run() {
-
-	}
-
 	public double getMapWidth() {
 		return mapWidth;
 	}
@@ -116,8 +112,6 @@ public class Controller extends Thread {
 		return mapHeight;
 	}
 	
-
-
 	public ArrayList<Ball> getAllBalls() {
 		ArrayList<Ball> allBalls = new ArrayList();
 		allBalls.addAll(scoreBalls);
