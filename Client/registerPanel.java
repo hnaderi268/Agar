@@ -103,7 +103,6 @@ public class RegisterPanel extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				String name=textName.getText();
 				String passCode=textPass.getText();
-//				String name=textName.getText();
 				client.sendUserInfo(new UserInfo(name,address,passCode));
 				client.app.window = new Window(client.app);
 				client.read();

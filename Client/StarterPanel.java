@@ -1,5 +1,6 @@
 package Client;
 
+import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -14,6 +15,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import Common.UserInfo;
+
 public class StarterPanel extends JFrame {
 
 	private JLabel labelIP = new JLabel();
@@ -22,6 +25,7 @@ public class StarterPanel extends JFrame {
 	private JTextField textIP = new JTextField(20);
 	private JButton loginButton = new JButton("Login!");
 	private JButton registerButton = new JButton("Register!");
+	private JButton guestButton = new JButton("Play as guest!");
 	private App app;
 	private Client client;
 
@@ -46,6 +50,7 @@ public class StarterPanel extends JFrame {
 		constraints.insets = new Insets(10, 10, 10, 10);
 
 		// add components to the panel
+//		constraints.gridwidth = 2;
 		constraints.gridx = 0;
 		constraints.gridy = 0;
 		newPanel.add(labelIP, constraints);
@@ -62,12 +67,17 @@ public class StarterPanel extends JFrame {
 
 		constraints.gridx = 0;
 		constraints.gridy = 2;
-		constraints.gridwidth = 2;
+//		constraints.gridwidth = 3;
 		constraints.anchor = GridBagConstraints.CENTER;
 		newPanel.add(registerButton, constraints);
-		constraints.gridx = 2;
+		constraints.gridx = 1;
 		newPanel.add(loginButton, constraints);
-
+		constraints.gridx = 2;
+		constraints.gridy = 3;
+		constraints.gridx = 1;
+		newPanel.add(guestButton, constraints);
+//		newPanel.add(guestButton, BorderLayout.WEST);
+		
 		registerButton.addActionListener(new ActionListener() {
 
 			@Override
@@ -77,14 +87,14 @@ public class StarterPanel extends JFrame {
 				// RegisterPanel regPan=new RegisterPanel(app);
 				// LoginPanel logPan=new LoginPanel(app);
 				if (!state.equals("Can not find the Server")) {
-					RegisterPanel regPan=new RegisterPanel(client);
+					RegisterPanel regPan = new RegisterPanel(client);
 				} else {
 					JOptionPane.showMessageDialog(null, state);
 					System.out.println("Client closed.");
 				}
 			}
 		});
-		
+
 		loginButton.addActionListener(new ActionListener() {
 
 			@Override
@@ -94,7 +104,29 @@ public class StarterPanel extends JFrame {
 				// RegisterPanel regPan=new RegisterPanel(app);
 				// LoginPanel logPan=new LoginPanel(app);
 				if (!state.equals("Can not find the Server")) {
-					LoginPanel loginPan=new LoginPanel(client);
+					LoginPanel loginPan = new LoginPanel(client);
+				} else {
+					JOptionPane.showMessageDialog(null, state);
+					System.out.println("Client closed.");
+				}
+			}
+		});
+
+		guestButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String state = client.connectToServer(textIP.getText(), 1469);
+				System.out.println(state);
+				if (!state.equals("Can not find the Server")) {
+					String name = "Guest " +(int)(Math.random()*9000+1000);
+					String passCode = "pass";
+					String address = "";
+					client.sendUserInfo(new UserInfo(name, address, passCode));
+					client.app.window = new Window(client.app);
+					client.read();
+					client.send();
+					setVisible(false);
 				} else {
 					JOptionPane.showMessageDialog(null, state);
 					System.out.println("Client closed.");

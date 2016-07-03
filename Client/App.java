@@ -14,10 +14,6 @@ public class App {
 //		logger=new Logger();
 //		logger.write("Welcome!");
 		client = new Client(app);
-		// int port=Integer.parseInt(JOptionPane.showInputDialog("Hi.Welcome to
-		// the world's best game ever\n" +
-		// "First of all,write server's Port:"));
-		
 		startPan=new StarterPanel(app,client);
 	}
 }

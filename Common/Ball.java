@@ -106,9 +106,9 @@ public class Ball implements Serializable {
 		g.fillOval((int) x - (int) (radius / 2) - (int) x2 + 1440 / 2,
 				(int) y - (int) (radius / 2) - (int) y2 + 825 / 2, (int) radius, (int) radius);
 		g.setColor(color.darker().darker());
-		Font font = new Font("Helvetica", Font.PLAIN, 32);
+		Font font = new Font("Helvetica", Font.PLAIN, 22);
 		g.setFont(font);
-		g.drawString(name, (int) x - (int) x2 + 1440 / 2 - 12, (int) y - (int) y2 + 825 / 2 + 11);
+		g.drawString(name, (int) x - (int) x2 + 1440 / 2 - 22, (int) y - (int) y2 + 825 / 2 + 11);
 	}
 
 	public void draw(Graphics2D g, double x2, double y2, boolean godPower) {

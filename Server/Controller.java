@@ -15,8 +15,8 @@ public class Controller extends Thread {
 
 	public static ArrayList<Player> players = new ArrayList();
 	public static ArrayList<Ball> scoreBalls = new ArrayList();
-	public int mapWidth = 2000, mapHeight = 1000;
-	public int scoreBallsCount = (mapWidth * mapHeight) / 40000;
+	public int mapWidth = 3000, mapHeight = 3000;
+	public int scoreBallsCount = (mapWidth * mapHeight) / 100000;
 	public App app;
 	public int speed = 100;
 	public Timer dance,hitTest, checkLose;
@@ -30,13 +30,13 @@ public class Controller extends Thread {
 	}
 
 	private void dance() {
-		dance = new Timer(10, new ActionListener() {
+		dance = new Timer(70, new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
 				for (Player player : players)
 					for (Ball ball : player.balls) {
-						ball.setX(ball.getX() + Math.random() * 4 - 2);
-						ball.setY(ball.getY() + Math.random() * 4 - 2);
+						ball.setX(ball.getX() + Math.random() * 2 - 1);
+						ball.setY(ball.getY() + Math.random() * 2 - 1);
 					}
 			}
 		});
