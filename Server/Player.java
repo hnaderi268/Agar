@@ -48,7 +48,8 @@ public class Player {
 
 		this.userInfo = userInfo;
 		
-		Ball b = new Ball(x, y, 50, userInfo.name);
+		Ball b = new Ball(x, y, 50, userInfo.name,userInfo.color);
+		b.address=userInfo.imgAdress;
 		balls.add(b);
 
 		read();

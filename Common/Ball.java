@@ -3,8 +3,11 @@ package Common;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.RenderingHints;
 import java.io.Serializable;
+
+import javax.swing.ImageIcon;
 
 public class Ball implements Serializable {
 	private double radius;
@@ -12,6 +15,7 @@ public class Ball implements Serializable {
 	private double difx = 0, dify = 0;
 	private Color color;
 	private String name = "";
+	public String address = "";
 	private static int mapWidth;
 
 	public Ball(double x, double y, double r) {
@@ -27,6 +31,14 @@ public class Ball implements Serializable {
 		radius = r;
 		this.name = name;
 		color = giveColor();
+	}
+
+	public Ball(double x, double y, double r, String name, Color color) {
+		this.x = x;
+		this.y = y;
+		radius = r;
+		this.name = name;
+		this.color = color;
 	}
 
 	public double getRadius() {
@@ -93,7 +105,7 @@ public class Ball implements Serializable {
 		g.setColor(color);
 		g.fillOval((int) x - (int) (radius / 2), (int) y - (int) (radius / 2), (int) radius, (int) radius);
 		g.setColor(color.darker().darker());
-		if(name!=null)
+		if (name != null)
 			g.drawString(name, (int) x - 5, (int) y + 5);
 	}
 
@@ -108,44 +120,11 @@ public class Ball implements Serializable {
 		g.setColor(color.darker().darker());
 		Font font = new Font("Helvetica", Font.PLAIN, 22);
 		g.setFont(font);
-		g.drawString(name, (int) x - (int) x2 + 1440 / 2 - 22, (int) y - (int) y2 + 825 / 2 + 11);
-	}
-
-	public void draw(Graphics2D g, double x2, double y2, boolean godPower) {
-		if (godPower) {
-			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			g.setColor(color.brighter().brighter().brighter().brighter().brighter());
-			g.fillOval((int) x - (int) ((radius + 6) / 2) - (int) x2 + 1440 / 4,
-					(int) y - (int) ((radius + 6) / 2) - (int) y2 + 825 / 2, (int) radius + 6, (int) radius + 6);
-			g.setColor(color.brighter().brighter().brighter().brighter().brighter());
-			g.fillOval((int) x - (int) (radius / 2) - (int) x2 + 1440 / 4,
-					(int) y - (int) (radius / 2) - (int) y2 + 825 / 2, (int) radius, (int) radius);
-			g.setColor(color.brighter().brighter().brighter());
-			Font font = new Font("Helvetica", Font.PLAIN, 32);
-			g.setFont(font);
-			g.drawString(name, (int) x - (int) x2 + 1440 / 4 - 12, (int) y - (int) y2 + 825 / 2 + 11);
-		} else {
-			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			g.setColor(color.darker());
-			g.fillOval((int) x - (int) ((radius + 6) / 2) - (int) x2 + 1440 / 4,
-					(int) y - (int) ((radius + 6) / 2) - (int) y2 + 825 / 2, (int) radius + 6, (int) radius + 6);
-			g.setColor(color);
-			g.fillOval((int) x - (int) (radius / 2) - (int) x2 + 1440 / 4,
-					(int) y - (int) (radius / 2) - (int) y2 + 825 / 2, (int) radius, (int) radius);
-			g.setColor(color.darker().darker());
-			Font font = new Font("Helvetica", Font.PLAIN, 32);
-			g.setFont(font);
-			g.drawString(name, (int) x - (int) x2 + 1440 / 4 - 12, (int) y - (int) y2 + 825 / 2 + 11);
+		g.drawString(name, (int) x - (int) x2 + 1440 / 2 - 32, (int) y - (int) y2 + 825 / 2 + 51);
+		if (!address.equals("")) {
+			Image icon = new ImageIcon(address).getImage();
+			g.drawImage(icon, (int) x - (int) x2 + 1440 / 2 - 20, (int) y - (int) y2 + 825 / 2 - 20, null);
 		}
 	}
 
-	public void draw(Graphics2D g, double div) {
-		int a = (int) ((((x - ((radius + 6) / 2)))) * div);
-		int b = (int) ((y - ((radius + 6) / 2)) * div);
-		int c = (int) ((radius + 6) * div);
-		int d = (int) ((radius + 6) * div);
-		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g.setColor(color.darker());
-		g.fillOval(a, b, c, d);
-	}
 }

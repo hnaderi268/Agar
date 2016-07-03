@@ -1,5 +1,6 @@
 package Client;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
@@ -11,6 +12,7 @@ import java.io.File;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JColorChooser;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -31,7 +33,8 @@ public class RegisterPanel extends JFrame {
 	private JTextField textColor = new JTextField(20);
 	private JButton playButton = new JButton("Play!");
 	private Client client;
-	private String address;
+	private String address="Avatar/1.jpg";
+	private Color color = giveColor();
 
 	public RegisterPanel(Client client) {
 
@@ -76,7 +79,13 @@ public class RegisterPanel extends JFrame {
 		newPanel.add(labelColor, constraints);
 
 		constraints.gridx = 1;
-		newPanel.add(textColor, constraints);
+		JButton colorButton = new JButton("Color");
+		colorButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				color = JColorChooser.showDialog(null, "Choose color", Color.white);
+			}
+		});
+		newPanel.add(colorButton, constraints);
 
 		constraints.gridx = 0;
 		constraints.gridy = 5;
@@ -86,24 +95,28 @@ public class RegisterPanel extends JFrame {
 
 		btnPic.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.setCurrentDirectory(new File("/Users/ho3in/Desktop/Avatar"));
+				fileChooser.setCurrentDirectory(new File("Avatar"));
 				int returnValue = fileChooser.showOpenDialog(null);
 				if (returnValue == JFileChooser.APPROVE_OPTION) {
 					File selectedFile = fileChooser.getSelectedFile();
-					address=selectedFile.getAbsolutePath();
+					address = selectedFile.getAbsolutePath();
 				}
 			}
 		});
-		
+
 		playButton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String name=textName.getText();
-				String passCode=textPass.getText();
-				client.sendUserInfo(new UserInfo(name,address,passCode));
+				String name = textName.getText();
+				if (name.equals(""))
+					name = "noname " + (int) (Math.random() * 9000 + 1000);
+				String passCode = textPass.getText();
+				if (passCode.equals(""))
+					passCode = "pass";
+				client.sendUserInfo(new UserInfo(name, address, passCode, color));
 				client.app.window = new Window(client.app);
 				client.read();
 				client.send();
@@ -120,5 +133,25 @@ public class RegisterPanel extends JFrame {
 		setLocationRelativeTo(null);
 
 		this.setVisible(true);
+	}
+
+	public Color giveColor() {
+		Color[] colors = new Color[20];
+		colors[0] = new Color(241, 196, 15);
+		colors[1] = new Color(26, 188, 156);
+		colors[2] = new Color(22, 160, 133);
+		colors[3] = new Color(46, 204, 113);
+		colors[4] = new Color(39, 174, 96);
+		colors[5] = new Color(52, 152, 219);
+		colors[6] = new Color(41, 128, 185);
+		colors[7] = new Color(142, 68, 173);
+		colors[8] = new Color(52, 73, 94);
+		colors[9] = new Color(243, 156, 18);
+		colors[10] = new Color(230, 126, 34);
+		colors[11] = new Color(211, 84, 0);
+		colors[12] = new Color(231, 76, 60);
+		colors[13] = new Color(231, 76, 60);
+		colors[14] = new Color(192, 57, 43);
+		return colors[(int) (Math.random() * 15)];
 	}
 }
