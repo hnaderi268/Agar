@@ -44,19 +44,19 @@ public class Client {
 
 	public String availableServers(int port) {
 		String availableServers = "";
-		System.out.println("finding servers...");
+		app.logger.write("finding servers...");
 		socket = new Socket();
 
 		for (int i = ip_interval_st; i <= ip_interval_en; i++) {
 			try {
-				System.out.println("checking: " + "127.0.0." + i);
+				app.logger.write("checking: " + "127.0.0." + i);
 				// socket.connect("127.0.0." + i, port);
 				SocketAddress sockaddr = new InetSocketAddress("127.0.0." + i, port);
 				socket.connect(sockaddr, 1000);
-				System.out.println("connected to : " + "127.0.0." + i);
+				app.logger.write("connected to : " + "127.0.0." + i);
 				if (validServer(socket)) {
 					availableServers += "127.0.0." + i;
-					System.out.println("valid");
+					app.logger.write("valid");
 				}
 			} catch (Exception e) {
 			}
@@ -82,7 +82,7 @@ public class Client {
 
 	public String connectToServer(String ip, int port) {
 		try {
-			System.out.println("trying to connect...");
+			app.logger.write("trying to connect...");
 			socket = new Socket(ip, port);
 			input = new ObjectInputStream(socket.getInputStream());
 			output = new ObjectOutputStream(socket.getOutputStream());
@@ -124,7 +124,7 @@ public class Client {
 		checkConnections = new Timer(100, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (System.currentTimeMillis() - lastRead > 2000 && lastRead != 0 && System.currentTimeMillis() - lastRead < 2099 ) {
-					System.out.println("Your connection has lost. You're now disconnected from server.");
+					app.logger.write("Your connection has lost. You're now disconnected from server.");
 				}
 			}
 		});

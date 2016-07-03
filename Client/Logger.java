@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 import javax.swing.JWindow;
 import javax.swing.Timer;
 import javax.swing.text.DefaultCaret;
@@ -32,8 +33,9 @@ public class Logger /* extends JFrame */ {
 		frame.setFocusable(true);
 		frame.setAlwaysOnTop(true);
 		frame.setLayout(new GridLayout(0, 1));
-		JTextArea label = new JTextArea();
-		frame.add(label);
+		JTextPane label = new JTextPane();
+		JScrollPane jsp = new JScrollPane(label);
+		frame.add(jsp);
 		frame.setVisible(true);
 
 		new Timer(100, (e) -> {

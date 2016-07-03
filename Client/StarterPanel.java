@@ -83,14 +83,14 @@ public class StarterPanel extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String state = client.connectToServer(textIP.getText(), 1469);
-				System.out.println(state);
+				app.logger.write(state);
 				// RegisterPanel regPan=new RegisterPanel(app);
 				// LoginPanel logPan=new LoginPanel(app);
 				if (!state.equals("Can not find the Server")) {
 					RegisterPanel regPan = new RegisterPanel(client);
 				} else {
 					JOptionPane.showMessageDialog(null, state);
-					System.out.println("Client closed.");
+					app.logger.write("Client closed.");
 				}
 			}
 		});
@@ -100,7 +100,7 @@ public class StarterPanel extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String state = client.connectToServer(textIP.getText(), 1469);
-				System.out.println(state);
+				app.logger.write(state);
 				// RegisterPanel regPan=new RegisterPanel(app);
 				// LoginPanel logPan=new LoginPanel(app);
 				if (!state.equals("Can not find the Server")) {
@@ -117,7 +117,8 @@ public class StarterPanel extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String state = client.connectToServer(textIP.getText(), 1469);
-				System.out.println(state);
+				app.logger.write(textIP.getText());
+				app.logger.write(state);
 				if (!state.equals("Can not find the Server")) {
 					String name = "Guest " +(int)(Math.random()*9000+1000);
 					String passCode = "pass";
