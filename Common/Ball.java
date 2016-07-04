@@ -33,10 +33,11 @@ public class Ball implements Serializable {
 		color = giveColor();
 	}
 
-	public Ball(double x, double y, double r, String name, Color color) {
+	public Ball(double x, double y, double r, String name, String address, Color color) {
 		this.x = x;
 		this.y = y;
 		radius = r;
+		this.address = address;
 		this.name = name;
 		this.color = color;
 	}
