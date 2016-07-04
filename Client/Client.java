@@ -29,12 +29,10 @@ public class Client {
 	ObjectOutputStream output;
 	ObjectInputStream input;
 
-	int ip_interval_st = 1;
-	int ip_interval_en = 10;
-
 	Thread send;
 	Thread read;
 
+	boolean mouseClicked=false;
 	long lastRead;
 	Timer checkConnections;
 
@@ -47,10 +45,10 @@ public class Client {
 		app.logger.write("finding servers...");
 		socket = new Socket();
 
-		for (int i = ip_interval_st; i <= ip_interval_en; i++) {
+		app.logger.write("check localhost");
+		for (int i = 1; i <= 2; i++)
 			try {
 				app.logger.write("checking: " + "127.0.0." + i);
-				// socket.connect("127.0.0." + i, port);
 				SocketAddress sockaddr = new InetSocketAddress("127.0.0." + i, port);
 				socket.connect(sockaddr, 1000);
 				app.logger.write("connected to : " + "127.0.0." + i);
@@ -60,7 +58,20 @@ public class Client {
 				}
 			} catch (Exception e) {
 			}
-		}
+
+		app.logger.write("check network");
+		for (int i = 1; i <= 20; i++)
+			try {
+				app.logger.write("checking: " + "192.168.1." + i);
+				SocketAddress sockaddr = new InetSocketAddress("192.168.1." + i, port);
+				socket.connect(sockaddr, 1000);
+				app.logger.write("connected to : " + "192.168.1." + i);
+				if (validServer(socket)) {
+					availableServers += "192.168.1." + i;
+					app.logger.write("valid");
+				}
+			} catch (Exception e) {
+			}
 		return availableServers;
 	}
 
@@ -104,16 +115,16 @@ public class Client {
 		}
 	}
 
-	public void loginUser(String name,String passCode) {
+	public void loginUser(String name, String passCode) {
 		try {
 
-			 output.writeObject("login");
-			 output.writeObject(name);
-			 output.writeObject(passCode);
-			 Object o=input.readObject();
-			 String msg=(String)o;
-			 JOptionPane.showMessageDialog(null, msg);
-			 checkConnections();
+			output.writeObject("login");
+			output.writeObject(name);
+			output.writeObject(passCode);
+			Object o = input.readObject();
+			String msg = (String) o;
+			JOptionPane.showMessageDialog(null, msg);
+			checkConnections();
 
 		} catch (Exception e) {
 
@@ -123,7 +134,8 @@ public class Client {
 	private void checkConnections() {
 		checkConnections = new Timer(100, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (System.currentTimeMillis() - lastRead > 2000 && lastRead != 0 && System.currentTimeMillis() - lastRead < 2099 ) {
+				if (System.currentTimeMillis() - lastRead > 2000 && lastRead != 0
+						&& System.currentTimeMillis() - lastRead < 2099) {
 					app.logger.write("Your connection has lost. You're now disconnected from server.");
 				}
 			}
@@ -141,7 +153,10 @@ public class Client {
 						output.reset();
 						Point pt = new Point(app.window.field.mouseX, app.window.field.mouseY);
 						output.writeObject(pt);
-
+						output.writeObject(mouseClicked);
+						if(mouseClicked)
+							mouseClicked=false;
+						
 						Thread.currentThread().sleep(70);
 					}
 				} catch (Exception e) {

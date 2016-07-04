@@ -88,6 +88,7 @@ public class StarterPanel extends JFrame {
 				// LoginPanel logPan=new LoginPanel(app);
 				if (!state.equals("Can not find the Server")) {
 					RegisterPanel regPan = new RegisterPanel(client);
+					setVisible(false);
 				} else {
 					JOptionPane.showMessageDialog(null, state);
 					app.logger.write("Client closed.");
@@ -105,6 +106,7 @@ public class StarterPanel extends JFrame {
 				// LoginPanel logPan=new LoginPanel(app);
 				if (!state.equals("Can not find the Server")) {
 					LoginPanel loginPan = new LoginPanel(client);
+					setVisible(false);
 				} else {
 					JOptionPane.showMessageDialog(null, state);
 					System.out.println("Client closed.");

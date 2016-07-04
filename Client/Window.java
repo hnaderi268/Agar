@@ -25,6 +25,9 @@ public class Window extends JFrame {
 		field = new Field(app);
 		content.add(field);
 
+		// Mouse Listener
+		
+		
 		this.setVisible(true);
 	}
 

@@ -121,6 +121,11 @@ public class Player {
 					Point pointer = (Point) point;
 					mouseX = pointer.x;
 					mouseY = pointer.y;
+					
+					Object mouseClicked = input.readObject();
+					boolean mouseClicked2 = (boolean) mouseClicked;
+					if(mouseClicked2)
+						divide();
 
 					lastRead = System.currentTimeMillis();
 				} catch (Exception e1) {
@@ -181,11 +186,11 @@ public class Player {
 				int cnt = 0;
 				ArrayList<Ball> temp = (ArrayList<Ball>) balls.clone();
 				for (Ball ball1 : temp) {
-					if (cnt != 0 && ball1.getRadius() > 50) {
-						ball1.setRadius(ball1.getRadius() - 1);
-						balls.get(0).setRadius(balls.get(0).getRadius() + 1);
-					} else if (cnt != 0 && ball1.getRadius() < 50) {
-						balls.get(0).setRadius(balls.get(0).getRadius() + ball1.getRadius());
+					if (cnt != 0 && ball1.getRadius() > 40) {
+						ball1.setRadius(ball1.getRadius() - 3);
+						balls.get(0).setRadius(balls.get(0).getRadius() + 2);
+					} else if (cnt != 0 && ball1.getRadius() <= 40) {
+						balls.get(0).setRadius(balls.get(0).getRadius() + ball1.getRadius()/2);
 						balls.remove(ball1);
 					}
 					cnt++;

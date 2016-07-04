@@ -28,8 +28,8 @@ public class Logger /* extends JFrame */ {
 
 	private void initUI() {
 		frame = new JWindow();
-		frame.setSize(240, 190);
-		frame.setLocation(0, 350);
+		frame.setSize(240, 220);
+		frame.setLocation(30, 595);
 		frame.setFocusable(true);
 		frame.setAlwaysOnTop(true);
 		frame.setLayout(new GridLayout(0, 1));
@@ -41,13 +41,6 @@ public class Logger /* extends JFrame */ {
 		new Timer(100, (e) -> {
 			label.setText(l.toString());
 			label.setText(label.getText()+" ");
-//			label.setCaretPosition(label.getDocument().getLength());
-//			String s = label.getText();
-//			int pos = s.length();
-//			label.setCaretPosition(pos);
-//			label.selectAll();
-//			Document d = label.getDocument();
-//			label.select(d.getLength(), d.getLength());
 		}).start();
 
 	}

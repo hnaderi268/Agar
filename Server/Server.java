@@ -114,7 +114,7 @@ public class Server extends Thread {
 
 			boolean state = false;
 			for (UserInfo user : users) {
-				if (user.name.equals(id)) {
+				if (user.name.equals(id))
 					if (user.passCode.equals(passCode)) {
 						Player ps = new Player(socket, input, output, user, app.controller);
 						ps.send.start();
@@ -123,8 +123,6 @@ public class Server extends Thread {
 						state = true;
 						break;
 					}
-				}
-				window.write(user.name + " " + id + "     " + user.passCode + " " + passCode);
 			}
 			if (state)
 				output.writeObject("Welcome back!");
