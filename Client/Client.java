@@ -117,7 +117,6 @@ public class Client {
 
 	public void loginUser(String name, String passCode) {
 		try {
-
 			output.writeObject("login");
 			output.writeObject(name);
 			output.writeObject(passCode);

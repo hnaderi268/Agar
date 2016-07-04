@@ -31,6 +31,7 @@ public class Player {
 	ArrayList<Ball> balls = new ArrayList();
 	public UserInfo userInfo;
 
+	public boolean speedPower = false;
 	long lastRead;
 
 	Timer move, send, read, scoreUpdater;
@@ -85,7 +86,10 @@ public class Player {
 			}
 
 			private int getSpeed() {
-				return controller.speed;
+				if (speedPower)
+					return controller.speed * 2;
+				else
+					return controller.speed;
 			}
 		});
 		move.start();
@@ -121,10 +125,10 @@ public class Player {
 					Point pointer = (Point) point;
 					mouseX = pointer.x;
 					mouseY = pointer.y;
-					
+
 					Object mouseClicked = input.readObject();
 					boolean mouseClicked2 = (boolean) mouseClicked;
-					if(mouseClicked2)
+					if (mouseClicked2)
 						divide();
 
 					lastRead = System.currentTimeMillis();
@@ -190,7 +194,7 @@ public class Player {
 						ball1.setRadius(ball1.getRadius() - 3);
 						balls.get(0).setRadius(balls.get(0).getRadius() + 2);
 					} else if (cnt != 0 && ball1.getRadius() <= 40) {
-						balls.get(0).setRadius(balls.get(0).getRadius() + ball1.getRadius()/2);
+						balls.get(0).setRadius(balls.get(0).getRadius() + ball1.getRadius() / 2);
 						balls.remove(ball1);
 					}
 					cnt++;
@@ -222,6 +226,16 @@ public class Player {
 			}
 		});
 		ballPlacer.start();
+	}
+
+	public void godPower() {
+		for(Ball ball:balls)
+			ball.godPower=true;
+		long past = System.currentTimeMillis();
+		while (System.currentTimeMillis() - past < 1500)
+			System.err.println("");
+		for(Ball ball:balls)
+			ball.godPower=false;
 	}
 
 }

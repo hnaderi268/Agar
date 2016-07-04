@@ -34,7 +34,7 @@ public class RegisterPanel extends JFrame {
 	private JTextField textColor = new JTextField(20);
 	private JButton playButton = new JButton("Play!");
 	private Client client;
-	private String address = "Avatar/1.jpg";
+	private String address = "Avatar/"+(int)(Math.random()*6+1)+".jpg";
 	private Color color = giveColor();
 
 	public RegisterPanel(Client client) {
