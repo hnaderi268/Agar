@@ -7,9 +7,9 @@ Each player has some balls in a 2D space. When a bigger ball hits a smaller ball
 
 # Screenshots
 
-![alt text](https://github.com/hnaderi268/Agar/blob/master/pic-1.png?raw=true)
-![alt text](https://github.com/hnaderi268/Agar/blob/master/pic-2.png?raw=true)
-![alt text](https://github.com/hnaderi268/Agar/blob/master/pic-3.png?raw=true)
-![alt text](https://github.com/hnaderi268/Agar/blob/master/pic-4.png?raw=true)
-![alt text](https://github.com/hnaderi268/Agar/blob/master/pic-5.png?raw=true)
-![alt text](https://github.com/hnaderi268/Agar/blob/master/pic-6.png?raw=true)
+![alt text](https://github.com/hnaderi268/Agar/blob/master/images/pic-1.PNG?raw=true)
+![alt text](https://github.com/hnaderi268/Agar/blob/master/images/pic-2.PNG?raw=true)
+![alt text](https://github.com/hnaderi268/Agar/blob/master/images/pic-3.PNG?raw=true)
+![alt text](https://github.com/hnaderi268/Agar/blob/master/images/pic-4.PNG?raw=true)
+![alt text](https://github.com/hnaderi268/Agar/blob/master/images/pic-5.PNG?raw=true)
+![alt text](https://github.com/hnaderi268/Agar/blob/master/images/pic-6.PNG?raw=true)
